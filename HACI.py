@@ -6,53 +6,43 @@ import streamlit as st
 st.set_page_config(
     page_title="HACI Business Intelligence",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="expanded"
 )
 
 # -----------------------------
 # Header Section
 # -----------------------------
-st.markdown(
-    """
-    <div style="background-color: #023047; padding: 30px; border-radius: 10px;">
-        <h1 style="color: white; text-align: center;">
-            HACI Business Intelligence Dashboard
-        </h1>
-        <p style="color: white; text-align: center; font-size:18px;">
-            Empowering data‑driven decision making for Halal compliance and business performance
-        </p>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+st.markdown("""
+<div style="background: linear-gradient(90deg, #023047, #219ebc); padding: 40px; border-radius: 15px; text-align:center;">
+    <h1 style="color:white; font-size:48px;">HACI Business Intelligence Dashboard</h1>
+    <p style="color:white; font-size:20px;">Empowering Halal businesses with actionable insights and compliance intelligence</p>
+</div>
+""", unsafe_allow_html=True)
 
-# Optional company image or logo
+# -----------------------------
+# Logo / Image
+# -----------------------------
 st.image(
     "https://www.halal.org.pk/wp-content/uploads/2022/08/cropped-HACI_logo.png",
-    width=300,
+    width=250,
     caption="Halal Assessment & Certification Institute (HACI)"
 )
 
 # -----------------------------
-# Introduction Section
+# Introduction
 # -----------------------------
-intro_text = """
-**Halal Assessment & Certification Institute (HACI)** ensures safe, high‑quality Halal products  
-through certification, training, and quality assurance.  
-
-In this dashboard, use the left sidebar or the buttons below to navigate:
-- **Executive Summary** – High-level performance indicators  
-- **Financials** – Revenue, cost, profitability analysis  
-- **Sales & Clients** – Market, growth, and customer insights  
-- **Operational Metrics** – Internal performance and process KPIs
-"""
-st.write(intro_text)
+st.markdown("""
+**About HACI:**  
+HACI ensures safe, high-quality Halal products for consumers through certification, training, and quality assurance programs.  
+This dashboard provides insights into financials, sales, client data, and operational performance for better decision-making.
+""")
 
 # -----------------------------
-# Navigation Cards / Buttons
+# Navigation Cards (Buttons)
 # -----------------------------
 st.subheader("Explore Dashboards")
 cols = st.columns(4)
+
 sections = [
     ("Executive Summary", "🧾"),
     ("Financials", "💰"),
@@ -62,19 +52,16 @@ sections = [
 
 for col, (title, emoji) in zip(cols, sections):
     if col.button(f"{emoji} {title}"):
-        st.session_state["page"] = title  # optional: track selection
-        st.experimental_rerun()  # navigate (if multi-page setup implemented)
+        st.session_state["page"] = title  # Optional: you can integrate with multi-page navigation
+        st.experimental_rerun()  # navigate to selected dashboard
 
 # -----------------------------
-# Footer / Contact Info
+# Footer
 # -----------------------------
-st.markdown(
-    """
-    <hr>
-    <p style="text-align:center; font-size:14px;">
-        📍 HACI – Halal Assessment & Certification Institute Pvt. Ltd., Pakistan  
-        | 📧 halal@halal.org.pk | 📞 +92‑33‑379702035
-    </p>
-    """,
-    unsafe_allow_html=True,
-)
+st.markdown("""
+<hr>
+<p style="text-align:center; font-size:14px;">
+📍 HACI – Halal Assessment & Certification Institute Pvt. Ltd., Pakistan |  
+📧 halal@halal.org.pk | 📞 +92‑33‑379702035
+</p>
+""", unsafe_allow_html=True)
