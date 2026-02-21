@@ -5,4 +5,5 @@ openpyxl
 numpy
 fpdf2
 reportlab
+streamlit-option-menu
 streamlit-aggrid
