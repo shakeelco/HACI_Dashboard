@@ -52,19 +52,19 @@ latest_growth = revenue_growth.iloc[-1]
 st.subheader("Key Metrics")
 
 kpi_data = [
-    {"name": "Total Revenue", "value": total_revenue, "delta": latest_growth, 
+    {"name": "Total Revenue", "value": total_revenue, "trend": latest_growth, 
      "desc": "Total Revenue is the sum of all income from sales."},
-    {"name": "Total Expenses", "value": total_expenses, "delta": None, 
+    {"name": "Total Expenses", "value": total_expenses, "trend": None, 
      "desc": "Total Expenses includes all operational costs such as salaries, rent, utilities, etc."},
-    {"name": "Net Profit", "value": net_profit, "delta": net_profit - revenue['Gross_Amount'].mean(), 
+    {"name": "Net Profit", "value": net_profit, "trend": latest_growth, 
      "desc": "Net Profit = Total Revenue - Total Expenses. It shows the company's actual profitability."},
-    {"name": "Total Clients", "value": total_clients, "delta": None, 
+    {"name": "Total Clients", "value": total_clients, "trend": None, 
      "desc": "Total Clients is the count of unique customers."},
-    {"name": "EBITDA", "value": ebitda, "delta": None, 
+    {"name": "EBITDA", "value": ebitda, "trend": None, 
      "desc": "EBITDA = Net Profit + Depreciation + Interest + Taxes. It shows operational performance."},
-    {"name": "Gross Margin", "value": gross_margin, "delta": None, 
+    {"name": "Gross Margin", "value": gross_margin, "trend": None, 
      "desc": "Gross Margin = (Revenue - COGS) / Revenue * 100. Indicates production/sales efficiency."},
-    {"name": "Profit Margin", "value": profit_margin, "delta": None, 
+    {"name": "Profit Margin", "value": profit_margin, "trend": None, 
      "desc": "Profit Margin = Net Profit / Revenue * 100. Shows the percentage of revenue retained as profit."},
 ]
 
@@ -72,14 +72,13 @@ kpi_data = [
 for i in range(0, len(kpi_data), 3):
     cols = st.columns(3)
     for j, kpi in enumerate(kpi_data[i:i+3]):
-        value_display = f"PKR {kpi['value']:,.0f}" if "PKR" not in str(kpi['value']) else kpi['value']
-        delta = kpi.get("delta")
-        if delta is not None:
-            arrow = "⬆️" if delta >= 0 else "⬇️"
-            value_display += f" {arrow} {delta:,.0f}"
+        value_display = f"PKR {kpi['value']:,.0f}" if isinstance(kpi['value'], (int, float)) else kpi['value']
         with cols[j]:
             with st.expander(f"{kpi['name']}: {value_display}"):
                 st.write(f"**What it is:** {kpi['desc']}")
+                if kpi.get("trend") is not None:
+                    arrow = "⬆️" if kpi["trend"] >= 0 else "⬇️"
+                    st.write(f"**Trend:** {arrow} {abs(kpi['trend']):.1f}% compared to previous month")
 
 # -----------------------------
 # Revenue Trend Chart
@@ -87,17 +86,3 @@ for i in range(0, len(kpi_data), 3):
 st.subheader("Monthly Revenue Trend")
 fig = px.line(monthly_revenue, x="Invoice_Date", y="Gross_Amount", title="Monthly Revenue", markers=True)
 st.plotly_chart(fig, use_container_width=True)
-
-# -----------------------------
-# Optional: Highlight Trends
-# -----------------------------
-st.subheader("Trends & Indicators")
-col1, col2 = st.columns(2)
-
-with col1:
-    st.write("Revenue Growth Latest Month:")
-    st.markdown(f"{'⬆️' if latest_growth >=0 else '⬇️'} {latest_growth:.1f}%")
-
-with col2:
-    st.write("Net Profit Trend:")
-    st.markdown(f"{'⬆️' if net_profit >=0 else '⬇️'} PKR {abs(net_profit):,.0f}")
