@@ -31,8 +31,12 @@ net_profit = total_revenue - total_expenses
 total_clients = clients["Client_ID"].nunique()
 
 # Additional KPIs
-ebitda = net_profit + expenses.get("Depreciation", 0).sum() + expenses.get("Interest", 0).sum() + expenses.get("Taxes", 0).sum()
-gross_margin = ((total_revenue - expenses.get("COGS", 0).sum()) / total_revenue) * 100
+ebitda = net_profit \
+        + expenses.get("Depreciation", pd.Series([0])).sum() \
+        + expenses.get("Interest", pd.Series([0])).sum() \
+        + expenses.get("Taxes", pd.Series([0])).sum()
+
+gross_margin = ((total_revenue - expenses.get("COGS", pd.Series([0])).sum()) / total_revenue) * 100
 profit_margin = (net_profit / total_revenue) * 100
 
 # Revenue Growth (month-over-month)
@@ -109,3 +113,4 @@ st.subheader("Visual Indicators")
 col1, col2 = st.columns(2)
 col1.write("Revenue Trend: " + ("⬆️" if latest_growth >= 0 else "⬇️"))
 col2.write("Net Profit: " + ("⬆️" if net_profit >= 0 else "⬇️"))
+
