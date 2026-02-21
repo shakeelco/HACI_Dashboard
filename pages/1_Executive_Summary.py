@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
 import plotly.graph_objects as go
 
 # -----------------------------
@@ -105,7 +104,7 @@ for i in range(0, len(kpi_list), 3):
         color, arrow, alert_icon = get_color_arrow(kpi["value"], kpi.get("thresholds"))
         display_value = format_value(kpi["value"], kpi["format"])
         
-        # KPI Card with gradient
+        # KPI Card with gradient and unique key
         col.markdown(
             f"""
             <div style='background: linear-gradient(135deg,#f0f8ff,#d1e7dd); padding:25px; border-radius:15px; text-align:center; box-shadow:3px 3px 10px #aaa'>
@@ -115,13 +114,13 @@ for i in range(0, len(kpi_list), 3):
             """, unsafe_allow_html=True
         )
         
-        # Info expander
-        with col.expander("Details"):
+        # Info expander with unique key
+        with col.expander(f"Details - {kpi['name']}"):
             st.write(f"**What it is:** {kpi['desc']}")
             if kpi.get("trend") is not None:
                 st.write(f"**Trend:** {arrow} {abs(kpi['trend']):.1f}% compared to previous month")
         
-        # Mini sparkline chart
+        # Mini sparkline chart with unique key
         fig = go.Figure(go.Scatter(
             y=kpi["trend_series"],
             mode='lines+markers',
@@ -129,11 +128,18 @@ for i in range(0, len(kpi_list), 3):
             marker=dict(size=4)
         ))
         fig.update_layout(height=80, margin=dict(l=0,r=0,t=0,b=0), xaxis_visible=False, yaxis_visible=False)
-        col.plotly_chart(fig, use_container_width=True)
+        col.plotly_chart(fig, use_container_width=True, key=f"{kpi['name']}_sparkline")
 
 # -----------------------------
 # Full Revenue Trend Chart
 # -----------------------------
 st.subheader("Monthly Revenue Trend")
-fig = px.line(monthly_revenue, x="Invoice_Date", y="Gross_Amount", title="Monthly Revenue", markers=True)
-st.plotly_chart(fig, use_container_width=True)
+fig = go.Figure(go.Scatter(
+    x=monthly_revenue["Invoice_Date"],
+    y=monthly_revenue["Gross_Amount"],
+    mode='lines+markers',
+    line=dict(color='blue'),
+    marker=dict(size=6)
+))
+fig.update_layout(title="Monthly Revenue", xaxis_title="Month", yaxis_title="Gross Amount (PKR)")
+st.plotly_chart(fig, use_container_width=True, key="full_revenue_chart")
