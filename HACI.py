@@ -26,7 +26,7 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Optional company image or logo (if you have one)
+# Optional company image or logo
 st.image(
     "https://www.halal.org.pk/wp-content/uploads/2022/08/cropped-HACI_logo.png",
     width=300,
@@ -37,36 +37,33 @@ st.image(
 # Introduction Section
 # -----------------------------
 intro_text = """
-**Halal Assessment & Certification Institute (HACI)** is dedicated to ensuring the availability  
-of safe, high‑quality Halal and Tayyib products for Muslim consumers through rigorous assessment,  
-training, and certification programs. Our approach combines standards, quality assurance, and  
-consumer trust to support halal‑compliant businesses across industries.:contentReference[oaicite:1]{index=1}
+**Halal Assessment & Certification Institute (HACI)** ensures safe, high‑quality Halal products  
+through certification, training, and quality assurance.  
 
-In this dashboard, you can navigate the left sidebar to explore detailed insights in the  
-following areas:
-- **Executive Summary** – High‑level performance indicators  
-- **Financials** – Revenue, cost, profitability analysis
-- **Sales & Clients** – Market, growth, and customer insights
+In this dashboard, use the left sidebar or the buttons below to navigate:
+- **Executive Summary** – High-level performance indicators  
+- **Financials** – Revenue, cost, profitability analysis  
+- **Sales & Clients** – Market, growth, and customer insights  
 - **Operational Metrics** – Internal performance and process KPIs
-
-Use the navigation sidebar to explore each section in detail.
 """
-
 st.write(intro_text)
 
 # -----------------------------
-# Call to Action / Navigation
+# Navigation Cards / Buttons
 # -----------------------------
-st.markdown(
-    """
-    <div style="background-color:#8ecae6; border-radius:8px; padding:20px; margin-top:20px;">
-        <h4 style="text-align:center; color:#023047;">
-            🧭 Use the left sidebar to navigate between dashboards and explore insights
-        </h4>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+st.subheader("Explore Dashboards")
+cols = st.columns(4)
+sections = [
+    ("Executive Summary", "🧾"),
+    ("Financials", "💰"),
+    ("Sales & Clients", "📊"),
+    ("Operational Metrics", "⚙️")
+]
+
+for col, (title, emoji) in zip(cols, sections):
+    if col.button(f"{emoji} {title}"):
+        st.session_state["page"] = title  # optional: track selection
+        st.experimental_rerun()  # navigate (if multi-page setup implemented)
 
 # -----------------------------
 # Footer / Contact Info
